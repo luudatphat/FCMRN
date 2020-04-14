@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_token" content="{{ csrf_token() }}" />
+    <title>Document</title>
+    <script src="jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            //    console.log(data)
+            $("#button").click(function () {
+                alert('Ok push')
+                var title = $("#title").val();
+                var body = $("#body").val();
+                var a = push(title, body);
+                console.log(iop)
+            })
+            async function push(a, b) {
+                const FIREBASE_API_KEY = "AAAAqgYphBg:APA91bEV29uNbFJR2kF4Ldiz0Rvn8emaX1-BV1s14TYjdI8Yh3wnCNvoj71_DsS-d9JxBB6Uz9nBkOi62GT3kQyFgdcB1MKD51qE-i-E0cyLH6-6pQZ-pwKHKgEbxH0m3xEDC2Ra5RXL";
+                const message = {
+                    registration_ids: ["dJ1my11FDHg:APA91bGjjJhHjCvmMYNln2tc0FNVDfMngnvAvJwH49XPlySLXH-nt1kCvDI4wXgghAT3Z0xOQD2A_ICu4fZN6K3yZBYYRdddr7omEyKxy9FFQExEgK-lb48U-nZ6UgWOscs6yNTlMQgW"],
+                    notification: {
+                        title: a,
+                        body: b,
+                        "vibrate": 1,
+                        "sound": 1,
+                        "show_in_foreground": true,
+                        "priority": "high",
+                        "content_available": true,
+                    },
+                    // data: {
+                    //     title: "india vs south africa test",
+                    //     body: "IND chose to bat",
+                    //     score: 50,
+                    //     wicket: 1
+                    // }
+                }
+
+                let headers = new Headers({
+                    "Content-Type": "application/json",
+                    "Authorization": "key=" + FIREBASE_API_KEY
+                });
+
+                let response = await fetch("https://fcm.googleapis.com/fcm/send", {method: "POST", headers, body: JSON.stringify(message)})
+                response = await response.json();
+                return response;
+            }
+        })
+    </script>
+</head>
+
+<body>
+    Text Button
+    <h1><%= title %></h1>
+    title<input type="text" id="title"/>
+    body<input type="text" id="body"/>
+    <button type="button" id="button">push</button>
+</body>
+
+</html>
