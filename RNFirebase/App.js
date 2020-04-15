@@ -36,7 +36,15 @@
 // export default App;
 
 import React, { Component } from 'react'
-import { Text, View, Button, AsyncStorage, fetch } from 'react-native'
+// import { Text, View, Button, AsyncStorage, fetch } from 'react-native'
+import { 
+  View, 
+  Text,
+  Button,
+  NativeModules,
+  NativeEventEmitter ,
+  AsyncStorage
+} from "react-native";
 import {fcmService} from './src/FCMService'
 import firebase from 'react-native-firebase';
 
@@ -110,65 +118,36 @@ export default class App extends Component {
     }
 
     async SendNotification(){
-      // const FIREBASE_API_KEY = "AIzaSyARI1HpBEucWiwgi1QB6IVtxHnSnrox3RQ";
-      // const message = {
-      //   registration_ids: ["dJ1my11FDHg:APA91bGjjJhHjCvmMYNln2tc0FNVDfMngnvAvJwH49XPlySLXH-nt1kCvDI4wXgghAT3Z0xOQD2A_ICu4fZN6K3yZBYYRdddr7omEyKxy9FFQExEgK-lb48U-nZ6UgWOscs6yNTlMQgW"],
-      //   notification: {
-      //     title: "Developers",
-      //     body: "Plz Subscribe to my channel",
-      //     "vibrate": 1,
-      //     "sound": 1,
-      //     "show_in_foreground": true,
-      //     "priority": "high",
-      //     "content_available": true,
-      //   }
-      // }
 
-      // let headers = new Headers({
-      //   "Content-Type": "application/json",
-      //   "Authorization": "key=" + FIREBASE_API_KEY
-      // });
+      const FIREBASE_API_KEY = "AAAAqgYphBg:APA91bEV29uNbFJR2kF4Ldiz0Rvn8emaX1-BV1s14TYjdI8Yh3wnCNvoj71_DsS-d9JxBB6Uz9nBkOi62GT3kQyFgdcB1MKD51qE-i-E0cyLH6-6pQZ-pwKHKgEbxH0m3xEDC2Ra5RXL";
+      const message = {
+          registration_ids: ["cHV_BKnBrIr3-KYvQaSsyL:APA91bH6atO6wZI2X3ZwSCi5fwnkygiue0KpLo7Jy6BPZ3gHAK9MIo3rD2QW04PBthoskMzqPa1Ch0Wv1zYENJSZq3tM0poF55__nZyXrW9YeRkGyeGiq2wGc8Fd7krO1eVn1v2P5nFc"],
+          notification: {
+              title: "Hello Anh AN",
+              body: "React Native Firebase",
+              "vibrate": 1,
+              "sound": 1,
+              "show_in_foreground": true,
+              "priority": "high",
+              "content_available": true,
+          }
+      };
 
-      // let response = await fetch("https://fcm.googleapis.com/fcm/send", { method: "POST", headers, body: JSON.stringify(message) })
-      // response = await response.json();
-      // console.log(response);
+      let headers = new Headers({
+          "Content-Type": "application/json",
+          "Authorization": "key=" + FIREBASE_API_KEY
+      });
 
-    const FIREBASE_API_KEY = "AAAAqgYphBg:APA91bEV29uNbFJR2kF4Ldiz0Rvn8emaX1-BV1s14TYjdI8Yh3wnCNvoj71_DsS-d9JxBB6Uz9nBkOi62GT3kQyFgdcB1MKD51qE-i-E0cyLH6-6pQZ-pwKHKgEbxH0m3xEDC2Ra5RXL";
-    const message = {
-      // registration_ids: ["dJ1my11FDHg:APA91bGjjJhHjCvmMYNln2tc0FNVDfMngnvAvJwH49XPlySLXH-nt1kCvDI4wXgghAT3Z0xOQD2A_ICu4fZN6K3yZBYYRdddr7omEyKxy9FFQExEgK-lb48U-nZ6UgWOscs6yNTlMQgW"], 
-      // notification: {
-      //   title: "india vs south africa test",
-      //   body: "IND chose to bat",
-      //   "vibrate": 1,
-      //   "sound": 1,
-      //   "show_in_foreground": true,
-      //   "priority": "high",
-      //   "content_available": true,
-      //   },
-      // data: {
-      //   title: "india vs south africa test",
-      //   body: "IND chose to bat",
-      //   score: 50,
-      //   wicket: 1
-      // }
-      "to" : "dJ1my11FDHg:APA91bGjjJhHjCvmMYNln2tc0FNVDfMngnvAvJwH49XPlySLXH-nt1kCvDI4wXgghAT3Z0xOQD2A_ICu4fZN6K3yZBYYRdddr7omEyKxy9FFQExEgK-lb48U-nZ6UgWOscs6yNTlMQgW",
-      "notification" : {
-          "body" : "Fuck you",
-          "title" : "React Native Firebase",
-          "content_available" : true,
-          "priority" : "high"
-      }
+      let response = await fetch("https://fcm.googleapis.com/fcm/send", {method: "POST", headers, body: JSON.stringify(message)});
+
+      response = await response.json();
+
+      console.log(response);
+
     }
 
-    let headers = new Headers({
-      "Content-Type": "application/json",
-      "Authorization": "key=" + FIREBASE_API_KEY
-    });
-
-    let response = await fetch("https://fcm.googleapis.com/fcm/send", { method: "POST", headers, body: JSON.stringify(message) })
-    response = await response.json();
-    console.log(response);
-
+    async Send(){
+      console.log('Hello');
     }
 
   render() {
