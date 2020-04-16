@@ -43,12 +43,23 @@ import {
   Button,
   NativeModules,
   NativeEventEmitter ,
-  AsyncStorage
+  AsyncStorage, 
+  TextInput
 } from "react-native";
 import {fcmService} from './src/FCMService'
 import firebase from 'react-native-firebase';
+import io from 'socket.io-client';
 
 export default class App extends Component {
+    state = {
+        name: 'Dat phat',
+        text: 'Nhập nhiệu'
+    }
+
+    constructor(props){
+        super(props);
+        this.socket = io('http://192.168.100.11:3000', {jsonp:true});
+    }
 
     async getToken () {
         let fcmToken = await AsyncStorage.getItem('fcmToken');
@@ -118,18 +129,15 @@ export default class App extends Component {
     }
 
     async SendNotification(){
+      var array = [this.state.name, this.state.text, '1', '0']
 
+        this.socket.emit("client-send-android" , array);
       const FIREBASE_API_KEY = "AAAAqgYphBg:APA91bEV29uNbFJR2kF4Ldiz0Rvn8emaX1-BV1s14TYjdI8Yh3wnCNvoj71_DsS-d9JxBB6Uz9nBkOi62GT3kQyFgdcB1MKD51qE-i-E0cyLH6-6pQZ-pwKHKgEbxH0m3xEDC2Ra5RXL";
       const message = {
-          registration_ids: ["cHV_BKnBrIr3-KYvQaSsyL:APA91bH6atO6wZI2X3ZwSCi5fwnkygiue0KpLo7Jy6BPZ3gHAK9MIo3rD2QW04PBthoskMzqPa1Ch0Wv1zYENJSZq3tM0poF55__nZyXrW9YeRkGyeGiq2wGc8Fd7krO1eVn1v2P5nFc"],
+          registration_ids: ["dz6u456WvV0yBpmMk20FAu:APA91bEQrPiz5jW-50St6v3khTqaiIcQY0upL9xf0ivCVZAUS1JxRkGjEyRT56__U6jZQ726_6VlCIWCl-0pzh3om8vjTFLRIeMREUBWGPICzkpPKZX4OqU05SI4RyBSEIEgMGYfRnrK"],
           notification: {
               title: "Hello Anh AN",
-              body: "React Native Firebase",
-              "vibrate": 1,
-              "sound": 1,
-              "show_in_foreground": true,
-              "priority": "high",
-              "content_available": true,
+              body: "React Native Firebase"
           }
       };
 
@@ -154,6 +162,16 @@ export default class App extends Component {
     return (
       <View>
         <Text> textInComponent </Text>
+         <TextInput
+                    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                    onChangeText={(name) =>this.setState({name})}
+                    value={this.state.name}
+                    />
+                     <TextInput
+                    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                    onChangeText={(text) =>this.setState({text})}
+                    value={this.state.text}
+                    />
             <Button title="Press me"
                 onPress={() => {this.SendNotification()}}
                />
